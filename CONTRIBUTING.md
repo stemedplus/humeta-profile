@@ -24,7 +24,7 @@ Anyone can comment, with or without proposing a change:
 | `vocabularies.json`: controlled vocabularies and their terms | `schema/humeta-record.schema.json` |
 | `README.md`, `CHANGELOG.md`, `endorsement/` | `crosswalks/*.csv` (except `eric_descriptor_status.json`) |
 | `examples/*.json` (example records) | `examples/*.datacite.json`, `examples/*.datacite.xml` |
-| `stemedplus_disciplines.json` and its schema | |
+| `schema/stemedplus_disciplines.schema.json` | `stemedplus_disciplines.json` (copied from stemedplus-theme) |
 
 The generated files are built by the HuMeta Portal's code, which implements the profile. After
 editing a source file, regenerate them from a checkout of HuMeta:
@@ -37,7 +37,7 @@ python HuMeta/scripts/build_profile_artifacts.py --profile-dir path/to/humeta-pr
 
 The **Check** workflow runs the same command with `--check` on every pull request and fails if a
 generated file is out of date, if an example record is invalid, or if the STEMEd+ discipline list
-does not match its schema.
+does not match its schema or differs from the copy in stemedplus-theme.
 
 Record every change under **Unreleased** in `CHANGELOG.md`.
 
@@ -57,6 +57,16 @@ DataCite DOI (resourceTypeGeneral `Standard`).
 
 ## The STEMEd+ discipline list
 
-`stemedplus_disciplines.json` defines the disciplines used across the STEMEd+ Commons sites. Each
-site downloads it from `main` when it builds, so a change merged here reaches every site within a
-day. Each discipline maps to HuMeta (ANZSRC) discipline terms in `vocabularies.json`.
+`stemedplus_disciplines.json` defines the disciplines used across the STEMEd+ Commons sites. Its
+source is [stemedplus-theme](https://github.com/stemedplus/stemedplus-theme); change it there, and
+each site picks up the change at its next build. This repository keeps a copy. When the Check
+workflow reports that the copy differs, update it:
+
+```bash
+curl -fsSLo stemedplus_disciplines.json \
+  https://raw.githubusercontent.com/stemedplus/stemedplus-theme/main/stemedplus_disciplines.json
+```
+
+Each discipline maps to HuMeta (ANZSRC) discipline terms in `vocabularies.json`. stemedplus-theme's
+tests check that every term it uses exists here and is not deprecated, so deprecate a discipline
+term only after the list in stemedplus-theme stops using it.

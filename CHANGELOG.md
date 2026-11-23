@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+* **STEMEd+ disciplines, list version 7, now kept in stemedplus-theme.** The
+  shared STEMEd+ discipline list moved to
+  [stemedplus-theme](https://github.com/stemedplus/stemedplus-theme);
+  `stemedplus_disciplines.json` here is a copy, and the Check workflow fails if
+  it differs from the source. Version 7 has 17 disciplines: new **Astronomy &
+  Space Science** (ANZSRC 5101, 5109), **Environmental Science** (ANZSRC 41),
+  and **Computing** (ANZSRC 46, split from Engineering, which is now ANZSRC 40);
+  Physics maps to ANZSRC 51. Earth Science no longer covers environmental or
+  planetary science. Every term used is a current term in `vocabularies.json`.
 * **US standards say so.** Labels and descriptions that rely on US standards
   now name the country: locale types read "City (US NCES 11–13)" and so on,
   the sensitivity flag reads "Education records (US FERPA)", the NCES and

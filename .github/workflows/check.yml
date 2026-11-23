@@ -1,8 +1,9 @@
 name: Check
 
 # On every pull request and push: the generated files match their sources, the example records are
-# valid, and the STEMEd+ discipline list matches its schema. The generator is the HuMeta Portal's
-# implementation of the profile, so this checks out HuMeta's main branch to run it.
+# valid, and the STEMEd+ discipline list matches its schema and its source in stemedplus-theme. The
+# generator is the HuMeta Portal's implementation of the profile, so this checks out HuMeta's main
+# branch to run it.
 
 on:
   push:
@@ -44,3 +45,13 @@ jobs:
                               json.loads(pathlib.Path("schema/stemedplus_disciplines.schema.json").read_text()))
           print("valid: stemedplus_disciplines.json")
           EOF
+      - name: The STEMEd+ discipline list matches stemedplus-theme
+        working-directory: humeta-profile
+        run: |
+          curl -fsSL -o "$RUNNER_TEMP/source.json" \
+            https://raw.githubusercontent.com/stemedplus/stemedplus-theme/main/stemedplus_disciplines.json
+          if ! cmp -s stemedplus_disciplines.json "$RUNNER_TEMP/source.json"; then
+            echo "::error file=stemedplus_disciplines.json::This copy differs from stemedplus-theme, where the list is kept. Update it with: curl -fsSLo stemedplus_disciplines.json https://raw.githubusercontent.com/stemedplus/stemedplus-theme/main/stemedplus_disciplines.json"
+            exit 1
+          fi
+          echo "stemedplus_disciplines.json matches stemedplus-theme"

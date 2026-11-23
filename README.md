@@ -98,7 +98,7 @@ and public comment.
 | `crosswalks/eric.csv` | Vocabulary-to-ERIC descriptor crosswalk with verification status (generated) |
 | `crosswalks/eric_descriptor_status.json` | Which ERIC descriptors have been verified, and how |
 | `examples/` | Example record with its DataCite JSON and XML (fictional study) |
-| `stemedplus_disciplines.json` | **Source.** The STEMEd+ disciplines (ids, labels, definitions, matching words, and the HuMeta discipline terms each corresponds to) that STEMEd+ Jobs, Funding, Digest, and Graduate Programs build from; schema in `schema/stemedplus_disciplines.schema.json` |
+| `stemedplus_disciplines.json` | **Copy** of the STEMEd+ disciplines (ids, labels, definitions, matching words, and the HuMeta discipline terms each corresponds to) that the STEMEd+ Commons boards build from. The source is [stemedplus-theme](https://github.com/stemedplus/stemedplus-theme); the Check workflow fails if this copy differs from it. Schema in `schema/stemedplus_disciplines.schema.json` |
 | `endorsement/` | Process and materials for community endorsement of version 1.0 |
 | `CHANGELOG.md` | Version history |
 
@@ -363,12 +363,13 @@ data, adding a crosswalk does not change the profile.
 * **`oem/profile.py`** in the HuMeta Portal: reference Python implementation (validation, DataCite
   JSON/XML, ERIC descriptors), with tests in `tests/test_profile.py`.
 * **JSON Schema** for use in any language.
-* **STEMEd+ Commons sites** (STEMEd+ Jobs, Funding, Digest, and STEM+ Education
-  Research Graduate Programs) share one discipline list,
-  `stemedplus_disciplines.json`. Each site keeps a copy and replaces it with
-  this file's current version on `main` when it builds, keeping its copy if the download
-  fails or the file is not valid. A change here reaches every site at its next
-  build.
+* **STEMEd+ Commons sites** (STEMEd+ Jobs, Funding, Awards, Conferences,
+  Professional Development, Digest, and STEM+ Education Research Graduate
+  Programs) share one discipline list, `stemedplus_disciplines.json`, kept in
+  [stemedplus-theme](https://github.com/stemedplus/stemedplus-theme). Each
+  discipline maps to HuMeta (ANZSRC 2020) discipline terms in
+  `vocabularies.json`. This repository keeps a copy, checked against the
+  source on every pull request, so the profile and the sites stay in step.
 
 ## 8. Versioning and governance
 
